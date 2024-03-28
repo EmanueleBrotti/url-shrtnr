@@ -34,11 +34,11 @@ app.get("/", function (req, res) {
 });
 
 async function parseurl(req, res, next) {
-  const url = req.body.url;
-
-  if (!url) {
+  if (!req.body.url) {
     return res.status(400).json({ error: "invalid url" });
   }
+  const url = req.body.url;
+  console.log("reading url: " + url);
 
   if (!validUrl.isUri(url)) {
     return res.status(400).json({ error: "invalid url" });
