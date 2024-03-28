@@ -43,12 +43,12 @@ async function parseurl(req, res, next) {
   try {
     const { valid } = await checkWebURL(url); //returns error if not valid
     if (!valid) {
-      return res.status(400).json({ error: "invalid url" });
+      return res.json({ error: "invalid url" });
     } else {
       next();
     }
   } catch (err) {
-    return res.status(400).json({ error: "invalid url" });
+    return res.json({ error: "invalid url" });
   }
 }
 
