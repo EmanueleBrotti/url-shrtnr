@@ -3,7 +3,7 @@ const express = require("express");
 const cors = require("cors");
 const app = express();
 const mongoose = require("mongoose");
-const validUrl = require("valid-url");
+const { checkWebURL } = require("node-uri");
 
 // Basic Configuration
 const port = process.env.PORT || 3000;
@@ -40,10 +40,15 @@ async function parseurl(req, res, next) {
   const url = req.body.url;
   console.log("reading url: " + url);
 
-  if (!validUrl.isUri(url)) {
+  try {
+    const { valid } = await checkWebURL(url); //returns error if not valid
+    if (!valid) {
+      return res.status(400).json({ error: "invalid url" });
+    } else {
+      next();
+    }
+  } catch (err) {
     return res.status(400).json({ error: "invalid url" });
-  } else {
-    next();
   }
 }
 
